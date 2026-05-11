@@ -1,0 +1,128 @@
+# Biomechanical trade-offs and the evolutionary dynamics of weapon morphology: phylogenetic comparative evidence from scorpion pincers
+# RevBayes Script: reparameterized OU models
+# Adapted from https://doi.org/10.1093/sysbio/syac036
+# Stenio I A Foerster
+# https://foersterst.github.io
+# May 2026
+
+###
+
+
+# Define output file names (trait order must match the input file)
+# with imputation
+#out_name = [
+#"output/cheL.log",
+#"output/cheW.log",
+#"output/cheD.log"
+#]
+
+# without imputation
+out_name = [
+"output/cheL-noimp.log",
+"output/cheW-noimp.log",
+"output/cheD-noimp.log"
+]
+
+underPrior = FALSE
+
+# Read in tree
+#psi <- readTrees("data/scorp-tree.nex")[1] # with imputation
+psi <- readTrees("data/scorp-tree-noimp.nex")[1] # without imputation
+
+# Get the tree heigth
+treeHeight <- psi.rootAge()
+
+for (j in 1:3) {
+
+	# Read in trait data
+	#contData <- readContinuousCharacterData("data/scorp-chela.nex") # with imputation
+	contData <- readContinuousCharacterData("data/scorp-chela-noimp.nex") # without imputation
+	contData.excludeAll()
+	contData.includeCharacter(j)
+
+	# Calculate trait mean and SD
+	for(i in 1:contData.size()) contData2[i] <- contData[i][1]
+	SDdata <- stdev(contData2)
+	MeanData <- mean(contData2)
+
+	# Initialise move counter
+	mvi = 0
+
+
+	###
+
+	### Option A1 in Cornuault's script: Prior for rho ###
+
+	# Declare alpha as a parameter using a dummy prior
+	alpha ~ dnExponential(lambda = 1) # dummy prior to declare alpha as a parameter (NB: do not change this line)
+	moves[++mvi] = mvScale(alpha, tune = TRUE, weight = 5.0)
+	moves[++mvi] = mvSlide(alpha, tune = TRUE, weight = 5.0)
+
+	# Deduce rho
+	rho := Probability(1 - (1 - exp(-2*treeHeight*alpha))/(2*treeHeight*alpha))
+	t_half := abs(ln(2)/alpha)
+	p := 1 - exp(-alpha*treeHeight) # this will be useful later
+
+	# Specify the prior on rho
+	rho_probability_density := dUniform(rho, lower = 0.0, upper = 1.0, log = FALSE)
+
+	# Get the correct posterior density
+	dummy1 ~ dnExponential(lambda = exp(alpha))
+	dummy1.clamp(0) # subtracts alpha dummy prior log-density from the log-posterior
+	abs_jacobian := abs( (1 - exp(-2*treeHeight*alpha)*(1+2*treeHeight*alpha)) / (2*treeHeight*alpha^2)) # |d rho / d alpha|
+	dummy2 ~ dnExponential(lambda = abs_jacobian) 
+	dummy2.clamp(0) # adds log of the absolute value of Jacobian to the log-posterior
+	dummy3 ~ dnExponential(lambda = abs(rho_probability_density)) 
+	dummy3.clamp(0) # adds rho prior log-density to the log-posterior
+
+
+	### Option B1 in Cornuault's script: Prior on beta, theta fixed to arbitrary value ###
+
+	beta ~ dnNormal(mean = MeanData, sd = 2*abs(SDdata))
+	moves[++mvi] = mvScale(beta, tune = TRUE, weight = 5.0)
+	moves[++mvi] = mvSlide(beta, tune = TRUE, weight = 5.0)
+	theta <- 0 # arbitrary value for theta
+	Yr := (beta - p*theta) / (1-p) # corresponding value for Yr such that p*theta + (1-p)*Yr = beta
+
+
+	### Option C1 in Cornuault's script: Prior on V ###
+
+	SD <- 0.5 # standard deviation of the log-normal prior on the log scale
+	Mode <- SDdata^2 # mode of the log-normal prior (here equal to sample variance)
+	Mean := ln(Mode) + SD^2 # mean of the log-normal prior on the log scale
+	V ~ dnLognormal(mean = Mean, sd = SD)
+	moves[++mvi] = mvScale(V, tune = TRUE, weight = 5.0)
+	moves[++mvi] = mvSlide(V, tune = TRUE, weight = 5.0)
+	sigma := sqrt(abs(V*2*alpha / (1-exp(-2*alpha*treeHeight)))) # deriving sigma2 from V
+	eta := sigma^2 / (2*alpha) # stationary variance (same as V in Boyko et al. 2023, Evolution, 77(3))
+
+
+	###
+
+
+	# OU Likelihood
+	if(!underPrior){
+		X ~ dnPhyloOrnsteinUhlenbeckREML(tree = psi, alpha = abs(alpha), theta = theta, sigma = sigma, rootStates = Yr)
+		X.clamp(contData)
+	}
+
+	# MCMC settings
+	mymodel = model(alpha)
+
+	# monitors
+	monitors[1] = mnScreen(printgen = 1000, sigma, alpha, theta)
+	monitors[2] = mnModel(filename = out_name[j], printgen = 1)
+
+	# number of chains
+	mymcmc = mcmc(mymodel, monitors, moves, nruns = 2, combine = "mixed")
+
+	# burnin and tunning
+	mymcmc.burnin(generations = 50000, tuningInterval = 500)
+
+	# iterations
+	mymcmc.run(generations = 10000)
+
+}
+
+quit()
+
