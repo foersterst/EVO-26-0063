@@ -587,10 +587,7 @@ factoextra::fviz_pca_biplot(
 # Repeatability (R) tells whether species are good representations of true species values: the higher the better.
 # An example from the literature is available here: https://doi.org/10.1111/evo.13865
 
-# tree
-t <- read.tree("data/tree-ssd.tre")
-
-# data female
+# data males and females
 dd <- read_csv("data/data-ssd.csv")
 
 # total body size variance accounted for by differences between species after controlling for sex
