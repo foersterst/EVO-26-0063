@@ -19,3 +19,9 @@ Please make sure to cite the following paper if you use any data from this repos
 ### Contact
 
 I welcome inquiries and opportunities for future collaboration. Contact details and information about my research are available at <https://foersterst.github.io>
+
+### Zenodo
+
+```         
+[![DOI](https://zenodo.org/badge/1235631639.svg)](https://doi.org/10.5281/zenodo.20973871)
+```
