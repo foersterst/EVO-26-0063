@@ -22,6 +22,4 @@ I welcome inquiries and opportunities for future collaboration. Contact details 
 
 ### Zenodo
 
-```         
-[![DOI](https://zenodo.org/badge/1235631639.svg)](https://doi.org/10.5281/zenodo.20973871)
-```
+[![](https://zenodo.org/badge/1235631639.svg)](https://doi.org/10.5281/zenodo.20973871)
