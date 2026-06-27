@@ -1,7 +1,13 @@
-# Biomechanical trade-offs and the evolutionary dynamics of weapon morphology: phylogenetic comparative evidence from scorpion pincers
-This repository accompanies the article Biomechanical trade-offs and the evolutionary dynamics of weapon morphology: phylogenetic comparative evidence from scorpion pincers.
+## Biomechanical trade-offs and the evolutionary dynamics of weapon morphology: phylogenetic comparative evidence from scorpion pincers
+
+### Citation
+
+Please make sure to cite the following paper if you use any data from this repository:
+
+**Foerster, S. Í. A.** (2026). Biomechanical trade-offs and the evolutionary dynamics of weapon morphology: Phylogenetic comparative evidence from scorpion pincers. *Evolution*, qpag097. <https://doi.org/10.1093/evolut/qpag097>
 
 ### File Description
+
 - `scripts/data-analysis.R` contains the R code to reproduce all results in the manuscript, including post-processing of RevBayes files.
 - `data/scorp-complete.csv` contains linear measurements (species means) for carapace length and chela length, width, and height, all in log<sub>10</sub> scale. Some values in this file were imputed.
 - `data/scorp-complete-tree.tre` contains the phylogenetic tree associated with the trait data matrix that includes imputed values (`data/scorp-complete.csv`).
@@ -10,19 +16,6 @@ This repository accompanies the article Biomechanical trade-offs and the evoluti
 - The files in `rb/data` are used to run the reparameterized OU models for each chela measurement, with and without imputed values. Chela measurements are expressed as residuals from phylogenetic regressions using carapace length as the predictor, with all variables in log<sub>10</sub> scale.
 - `rb/OU-repar.Rev` is the RevBayes script used to run the reparameterized OU models and generate the files in `rb/output`.
 
-### Data usage notice
+### Contact
 
-The data contained in this repository are associated with the publication:
-
-"Biomechanical trade-offs and the evolutionary dynamics of weapon morphology: phylogenetic comparative evidence from scorpion pincers (Evolution, manuscript EVO-26-0063)"
-
-The code in this repository is released under the MIT License.
-However, the data files are **not** covered by the MIT License.
-
-The data are provided for transparency and reproducibility purposes only.
-Users wishing to reuse, redistribute, or publish analyses based on these data
-must first obtain permission from the author.
-
-Please contact:
-stenioit@gmail.com
-
+I welcome inquiries and opportunities for future collaboration. Contact details and information about my research are available at <https://foersterst.github.io>

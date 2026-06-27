@@ -57,8 +57,8 @@ theme_update(
 
 # traits_data |>
 #   select(species, cheL_resid, cheW_resid, cheD_resid) |>
-#   #write.table(file = "rb/data/scorp-chela.nex", quote = F, sep = "\t", row.names = F, col.names = F) # with imputation
-#   #write.table(file = "rb/data/scorp-chela-noimp.nex", quote = F, sep = "\t", row.names = F, col.names = F) # without imputation
+#   write.table(file = "rb/data/scorp-chela.nex", quote = F, sep = "\t", row.names = F, col.names = F) # with imputation
+#   write.table(file = "rb/data/scorp-chela-noimp.nex", quote = F, sep = "\t", row.names = F, col.names = F) # without imputation
 
 # export tree in nexus format
 # write.nexus(tree, file = "rb/data/scorp-tree.nex") # with imputation
@@ -562,6 +562,7 @@ factoextra::fviz_pca_biplot(
   pointsize = 1.25,
   alpha.ind = 0.55,
   repel = T,
+  select.var = list(name = c("cheL", "cheW", "cheD")),
   col.var = "black",
   title = NULL
 ) +
