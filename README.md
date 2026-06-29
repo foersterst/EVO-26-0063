@@ -15,11 +15,16 @@ Please make sure to cite the following paper if you use any data from this repos
 - `data/data-ssd.csv` contains linear measurements (species means) of carapace length and chela dimensions (length, width, and height) for male and female scorpions. This file is used for the repeatability analyses. Some trait values were imputed separately for each sex.
 - The files in `rb/data` are used to run the reparameterized OU models for each chela measurement, with and without imputed values. Chela measurements are expressed as residuals from phylogenetic regressions using carapace length as the predictor, with all variables in log<sub>10</sub> scale.
 - `rb/OU-repar.Rev` is the RevBayes script used to run the reparameterized OU models and generate the files in `rb/output`.
+- `data/aln.beast.nex` Multiple sequence alignment used to create the phylogeny. DNA partitions are indicated within the file.
 
 ### Contact
 
 I welcome inquiries and opportunities for future collaboration. Contact details and information about my research are available at <https://foersterst.github.io>
 
 ### Zenodo
+
+This repository has been archived on Zenodo:
+
+<https://doi.org/10.5281/zenodo.20973872>
 
 [![](https://zenodo.org/badge/1235631639.svg)](https://doi.org/10.5281/zenodo.20973871)
