@@ -23,8 +23,6 @@ I welcome inquiries and opportunities for future collaboration. Contact details 
 
 ### Zenodo
 
-This repository has been archived on Zenodo:
+This repository has been archived on [Zenodo](https://doi.org/10.5281/zenodo.20973872).
 
-<https://doi.org/10.5281/zenodo.20973872>
-
-[![](https://zenodo.org/badge/1235631639.svg)](https://doi.org/10.5281/zenodo.20973871)
+[![](https://zenodo.org/badge/DOI/10.5281/zenodo.20973872.svg)](https://doi.org/10.5281/zenodo.20973872)
